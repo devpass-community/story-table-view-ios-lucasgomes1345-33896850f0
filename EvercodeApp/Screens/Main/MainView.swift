@@ -6,6 +6,8 @@ final class MainView: UIView {
        
         let view = UITableView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.register(UITableViewCell.self, forCellReuseIdentifier: "MainViewCellIdentifier")
+        view.dataSource = self
         return view
     }()
     
@@ -57,4 +59,19 @@ private extension MainView {
             tableView.bottomAnchor.constraint(equalTo: bottomAnchor)
         ])
     }
+}
+
+extension MainView: UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        items.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "MainViewCellIdentifier") else { fatalError("Generate MainViewCellIdentifier error") }
+        cell.textLabel?.text = items[indexPath.row]
+        cell.selectionStyle = .none
+        return cell
+    }
+    
+    
 }
